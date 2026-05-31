@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SvX Market</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #0a0a2a, #000000);
+            font-family: 'Courier New', monospace;
+        }
+
+        /* ===== START SCREEN - CYBER BLUE THEME ===== */
+        .start-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            z-index: 999999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Animasi background cyber */
+        .start-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 200, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(100, 0, 255, 0.1) 0%, transparent 50%);
+            animation: cyberPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes cyberPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .start-overlay h1 {
+            color: #00ffff;
+            font-size: clamp(24px, 7vw, 50px);
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px #00ffff, 0 0 40px #0088ff;
+            animation: glowBlue 2s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes glowBlue {
+            0%, 100% { text-shadow: 0 0 20px #00ffff, 0 0 40px #0088ff; }
+            50% { text-shadow: 0 0 30px #00ffff, 0 0 60px #0088ff, 0 0 80px #00ffff; }
+        }
+
+        .start-overlay p {
+            color: #8888ff;
+            font-size: 14px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* TOMBOL SVX MARKET - CYBER BLUE */
+        .start-btn {
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5, #6a0dad);
+            color: white;
+            border: 2px solid #00ffff;
+            padding: 18px 45px;
+            font-size: 20px;
+            font-weight: 900;
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 
+                0 0 20px rgba(0, 210, 255, 0.5),
+                0 0 40px rgba(58, 123, 213, 0.3),
+                inset 0 0 20px rgba(255,255,255,0.1);
+            animation: cyberBtn 2s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        @keyframes cyberBtn {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(0, 210, 255, 0.5), 0 0 40px rgba(58, 123, 213, 0.3);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(0, 210, 255, 0.8), 0 0 60px rgba(58, 123, 213, 0.5);
+                transform: scale(1.02);
+            }
+        }
+
+        .start-btn:hover {
+            background: linear-gradient(135deg, #00f2ff, #5090ff, #8a2be2);
+            box-shadow: 0 0 40px rgba(0, 242, 255, 0.8);
+        }
+
+        /* VIRUS SCREEN */
+        .fullscreen-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.98);
+            z-index: 99999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .fullscreen-overlay.active {
+            display: flex;
+        }
+
+        .virus-text {
+            color: #ff0000;
+            font-size: clamp(18px, 5vw, 35px);
+            font-weight: 900;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+            animation: shakeText 0.1s infinite;
+            margin-bottom: 25px;
+        }
+
+        @keyframes shakeText {
+            0%, 100% { transform: translateX(-2px); }
+            50% { transform: translateX(2px); }
+        }
+
+        .timer-box {
+            background: linear-gradient(135deg, #220000, #440000);
+            border: 3px solid #ff0000;
+            border-radius: 15px;
+            padding: 20px 40px;
+            margin: 15px 0;
+            box-shadow: 0 0 30px rgba(255,0,0,0.5);
+        }
+
+        .timer-label {
+            color: #ff6666;
+            font-size: 14px;
+        }
+
+        .timer-count {
+            color: #ff0000;
+            font-size: clamp(50px, 15vw, 90px);
+            font-weight: 900;
+            text-shadow: 0 0 20px #ff0000;
+        }
+
+        .warning-text {
+            color: #ff4444;
+            font-size: 13px;
+            margin-top: 15px;
+            animation: blink 0.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .gift-button {
+            display: none;
+            background: linear-gradient(135deg, #ff0000, #cc0000);
+            color: white;
+            border: 3px solid gold;
+            padding: 18px 35px;
+            font-size: 20px;
+            font-weight: 900;
+            border-radius: 15px;
+            cursor: pointer;
+            margin-top: 25px;
+            animation: pulseBtn 0.5s infinite;
+        }
+
+        .gift-button.show {
+            display: block;
+        }
+
+        @keyframes pulseBtn {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        /* SURPRISE */
+        .surprise-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            z-index: 999999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .surprise-container.show {
+            display: flex;
+        }
+
+        .happy-birthday {
+            font-size: clamp(28px, 7vw, 50px);
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff0000, #ff6600, #ffff00, #00ff00, #00ffff, #ff00ff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: rainbow 2s ease infinite;
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .birthday-name {
+            color: #fff;
+            font-size: clamp(22px, 5vw, 35px);
+            font-weight: 900;
+            text-shadow: 0 0 20px #ff00ff;
+            margin: 15px 0;
+        }
+
+        .cake-emoji {
+            font-size: 60px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .from-name {
+            color: #ff6600;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        /* CONFETTI */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            animation: fall 3s linear forwards;
+            z-index: 9999999;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* SCANLINES - CYBER BLUE */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 200, 255, 0.02) 0px,
+                rgba(0, 200, 255, 0.02) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 99998;
+        }
+
+        /* FALLING WARNINGS */
+        .falling-warning {
+            position: fixed;
+            background: linear-gradient(135deg, #ff0000, #880000);
+            color: white;
+            padding: 6px 12px;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 5px;
+            animation: fallDown linear forwards;
+            z-index: 500;
+            pointer-events: none;
+        }
+
+        @keyframes fallDown {
+            0% { top: -50px; opacity: 1; }
+            100% { top: 110%; opacity: 0; }
+        }
+
+        /* FAKE ERROR POPUP */
+        .fake-error {
+            position: fixed;
+            background: #111;
+            border: 2px solid red;
+            padding: 10px 15px;
+            color: red;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 1000;
+            animation: popIn 0.3s forwards;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        /* CYBER GRID LINES */
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- CYBER GRID BACKGROUND -->
+<div class="cyber-grid"></div>
+
+<!-- START SCREEN - CYBER BLUE THEME -->
+<div class="start-overlay" id="startScreen">
+    <h1>SvX Market</h1>
+    <p>Klik untuk mengakses marketplace eksklusif</p>
+    <button class="start-btn" onclick="startVirus()">SvX Market</button>
+</div>
+
+<!-- VIRUS PRANK SCREEN -->
+<div class="fullscreen-overlay" id="virusScreen">
+    <div class="virus-text">
+        🩸‼️ DEVICE TERINFEKSI ‼️🩸<br>
+        TAMZY VIRUS AKTIF!
+    </div>
+    
+    <div class="timer-box">
+        <div class="timer-label">⏰ Waktu Tersisa:</div>
+        <div class="timer-count" id="timer">5</div>
+    </div>
+    
+    <div class="warning-text">
+        ⚠️ JANGAN COBA-COBA KELUAR! ⚠️
+    </div>
+    
+    <button class="gift-button" id="giftBtn" onclick="showSurprise()">🩸 Reset Device 🩸
+        
+    </button>
+</div>
+
+<!-- SURPRISE BIRTHDAY SCREEN -->
+<div class="surprise-container" id="surpriseScreen">
+    <div class="cake-emoji">💫</div>
+    <div class="happy-birthday">SvX Market</div>
+    <div class="birthday-name">Digital marketplace</div>
+    <div style="color:#fff;font-size:16px;margin:15px 0;">
+        Bermacam macam produk yang menarik<br>
+        Fast respon dan Admin yang Ramah<br>
+        Web Produk SvX?   svx-market.vercel.app
+    </div>
+    <div class="cake-emoji">⭐⭐⭐⭐⭐</div>
+    <div style="color:#888;font-size:14px;margin-top:15px;">Dari:</div>
+    <div class="from-name">Tamzy SvX Market</div>
+</div>
+
+<script>
+    // ===== VARIABEL =====
+    let timeLeft = 60;
+    let virusActive = false;
+    const timerDisplay = document.getElementById('timer');
+    const giftBtn = document.getElementById('giftBtn');
+    const startScreen = document.getElementById('startScreen');
+    const virusScreen = document.getElementById('virusScreen');
+    const surpriseScreen = document.getElementById('surpriseScreen');
+
+    // ===== START VIRUS + FULLSCREEN =====
+    function startVirus() {
+        // AKTIFKAN FULLSCREEN!
+        const elem = document.documentElement;
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen().catch(()=>{});
+        } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen();
+        }
+
+        // GANTI SCREEN
+        startScreen.style.display = 'none';
+        virusScreen.classList.add('active');
+        virusActive = true;
+
+        // MULAI TIMER
+        startTimer();
+        
+        // MULAI FALLING WARNINGS
+        startWarnings();
+        
+        // MULAI FAKE ERRORS
+        startFakeErrors();
+    }
+
+    // ===== TIMER 30 DETIK =====
+    function startTimer() {
+        const timerInterval = setInterval(() => {
+            timeLeft--;
+            timerDisplay.innerText = timeLeft;
+            
+            if (timeLeft <= 10) {
+                timerDisplay.style.color = '#ff0000';
+                timerDisplay.style.textShadow = '0 0 30px #ff0000';
+            }
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                timerDisplay.innerText = "0";
+                giftBtn.classList.add('show');
+            }
+        }, 1000);
+    }
+
+    // ===== FALLING WARNINGS =====
+    const warnings = [
+        "💀 VIRUS 💀", "⚠️ DANGER ⚠️", "🩸 HACKED 🩸", 
+        "🔥 ERROR 🔥", "☠️ ALERT ☠️", "‼️ TAMZY ‼️"
+    ];
+
+    function startWarnings() {
+        function createWarning() {
+            if (!virusActive) return;
+            const box = document.createElement('div');
+            box.className = 'falling-warning';
+            box.innerText = warnings[Math.floor(Math.random() * warnings.length)];
+            box.style.left = Math.random() * 90 + '%';
+            box.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+            document.body.appendChild(box);
+            setTimeout(() => box.remove(), 3500);
+        }
+        setInterval(createWarning, 200);
+    }
+
+    // ===== FAKE ERROR POPUPS =====
+    function startFakeErrors() {
+        function createError() {
+            if (!virusActive) return;
+            const err = document.createElement('div');
+            err.className = 'fake-error';
+            err.innerText = "⚠️ SYSTEM ERROR #" + Math.floor(Math.random() * 9999);
+            err.style.top = Math.random() * 70 + 10 + '%';
+            err.style.left = Math.random() * 60 + 10 + '%';
+            document.body.appendChild(err);
+            setTimeout(() => err.remove(), 1500);
+        }
+        setInterval(createError, 800);
+    }
+
+    // ===== SHOW SURPRISE =====
+    function showSurprise() {
+        virusActive = false;
+        
+        // EXIT FULLSCREEN
+        if (document.exitFullscreen) {
+            document.exitFullscreen().catch(()=>{});
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        }
+
+        // GANTI SCREEN
+        virusScreen.classList.remove('active');
+        surpriseScreen.classList.add('show');
+
+        // CONFETTI BOMBARDIR
+        for (let i = 0; i < 150; i++) {
+            setTimeout(() => createConfetti(), i * 30);
+        }
+    }
+
+    // ===== CONFETTI =====
+    function createConfetti() {
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = Math.random() * 100 + '%';
+        c.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        c.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 4000);
+    }
+
+    // ===== BLOCK BACK BUTTON - TRAP! =====
+    for (let i = 0; i < 10; i++) {
+        history.pushState(null, null, location.href);
+    }
+
+    window.onpopstate = function() {
+        if (virusActive) {
+            history.pushState(null, null, location.href);
+            alert("⚠️ TIDAK BISA KELUAR! ⚠️\n\nTunggu penyuntikan Virus selesai");
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen().catch(()=>{});
+            }
+        }
+    };
+
+    // ===== BLOCK CONTEXT MENU =====
+    document.addEventListener('contextmenu', e => e.preventDefault());
+
+    // ===== BLOCK ESCAPE KEY =====
+    document.addEventListener('keydown', e => {
+        if (virusActive && (e.key === 'Escape' || e.key === 'Backspace')) {
+            e.preventDefault();
+            alert("⚠️ TIDAK BISA KELUAR! ⚠️");
+        }
+    });
+
+    // ===== TITLE FLICKER =====
+    const titles = ["🩸 TAMZY VIRUS 🩸", "⚠️ HACKED ⚠️", "💀 ERROR 💀", "‼️ ALERT ‼️"];
+    let titleIdx = 0;
+    setInterval(() => {
+        if (virusActive) {
+            document.title = titles[titleIdx % titles.length];
+            titleIdx++;
+        } else {
+            document.title = "Tamzy Ganteng";
+        }
+    }, 500);
+
+    // ===== PREVENT SCROLL =====
+    document.addEventListener('touchmove', e => {
+        if (virusActive) e.preventDefault();
+    }, { passive: false });
+</script>
+
+</body>
+</html>
